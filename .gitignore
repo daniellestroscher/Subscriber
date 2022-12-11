@@ -26,3 +26,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /subscriber-app-ab338-firebase-adminsdk-eb9pa-11dfb1470c.json
+firebase.conf.js

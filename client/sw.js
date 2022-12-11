@@ -1,6 +1,7 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.3/workbox-sw.js');
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js');
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -16,13 +17,15 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 // handles notifications that reach the app when its not in the foreground
 // In this file because it does not have access to the WINDOW OBJECT
-messaging.onBackgroundMessage((payload) => {
-  console.log('Received background message ', payload);
-  const notificationTitle = payload.data.title;
+messaging.onBackgroundMessage(function (payload) {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  // Customize notification here
+  const notificationTitle = 'Background Message Title';
   const notificationOptions = {
     body: payload.data.body,
     icon: '../icon1058x1058.png',
   };
+
   self.registration.showNotification(notificationTitle,
     notificationOptions);
 });
@@ -43,40 +46,3 @@ messaging.onBackgroundMessage((payload) => {
 //   console.log('got message from listener in SW!!!', payload);
 //   event.waitUntil(self.registration.showNotification(notificationTitle, notificationOptions));
 // });
-
-
-/////REST OF SW NOT A PART OF FIREBASE/////
-workbox.core.setCacheNameDetails({
-  prefix: 'subscriber-cache',
-})
-
-  // Caching Images
-workbox.routing.registerRoute(
-  /\.(?:png|gif|jpg|jpeg|webp|svg)$/,
-  new workbox.strategies.CacheFirst({
-    cacheName: 'subscriber-images-cache',
-    plugins: [
-      new workbox.expiration.ExpirationPlugin({
-        maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-      }),
-    ],
-  })
-);
-
-// Cache CSS and JavaScript Files
-workbox.routing.registerRoute(
-  /\.(?:js|css)$/,
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'subscriber-static-resources-cache',
-  })
-);
-
-// Caching Content from Multiple Origins
-workbox.routing.registerRoute(
-  /.*(?:googleapis|gstatic)\.com/,
-  new workbox.strategies.StaleWhileRevalidate(),
-);
-
-// if any pre-cache rules are defined in workbox config this is where they are injected.
-//workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);

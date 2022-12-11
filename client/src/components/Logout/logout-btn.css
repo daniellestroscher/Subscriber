@@ -1,0 +1,18 @@
+.logout-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  height: 2rem;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid white;
+  background: none;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 5px 10px -5px rgba(0,0,0,0.5);
+}
+
+.logout-btn:active {
+  box-shadow: none;
+}

@@ -3,9 +3,7 @@
   flex-direction: column;
   justify-content: center;
   max-width: 800px;
-  margin: auto;
-  width: 95%;
-  padding: 10px;
+  width: 100%;
 }
 .toast-notify {
   display:flex;
