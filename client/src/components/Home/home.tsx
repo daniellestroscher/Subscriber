@@ -16,8 +16,12 @@ function Home({ subscriptions }: { subscriptions?: Array<Subscription> }) {
         : Number(sub.price)
     ).reduce((prev, curr) => prev + curr)
   }
-
-  const count = getMonthlyAverageCost();
+  let count;
+  if (subscriptions && subscriptions.length > 0) {
+    count = getMonthlyAverageCost();
+  } else {
+    count = 0;
+  }
 
   return (
     <>
@@ -28,13 +32,15 @@ function Home({ subscriptions }: { subscriptions?: Array<Subscription> }) {
         />
         <Logout />
       </header>
-      {count !== 0 &&
+      {count !== 0 ?
         <footer>
           <div className='header-notice'>
             <h2 className='header-cont-title'>My monthly average subscription expenses:</h2>
             <h2 className='header-cont-price'>${count?.toFixed(2)}</h2>
           </div>
         </footer>
+        :
+        <div className='empty-header-notice'></div>
       }
       <div className='body-cont'>
         <section className='body-header'>
