@@ -126,6 +126,7 @@ function SubForm({ subscription }: Props) {
           <div className="payment-info">
             <SubFormItem
               label="Price:"
+              placeholder='Price'
               data={sub.price}
               onChange={(e) =>
                 setSub({ ...sub, price: parseInt(e.target.value) })
@@ -151,16 +152,17 @@ function SubForm({ subscription }: Props) {
         <div className="form-body">
           <SubFormItem
             label="Title: "
+            placeholder='Title'
             data={sub.title}
             onChange={(e) => setSub({ ...sub, title: e.target.value })}
             type="string"
           />
-          <label className="input-label">Category:</label>
           <select
             className="category-select"
             name="category"
             onChange={(e) => setSub({ ...sub, category: e.target.value })}
           >
+            <option value="select">Select Category</option>
             <option value="entertainment">entertainment</option>
             <option value="education">education</option>
             <option value="work">work</option>
@@ -170,12 +172,14 @@ function SubForm({ subscription }: Props) {
           </select>
           <SubFormItem
             label="First Payment: "
+            placeholder='First Payment Date'
             data={new Date(sub.start).toLocaleDateString("en-ca")}
             onChange={(e) => setSub({ ...sub, start: e.target.value })}
             type="date"
           />
           <SubFormItem
             label="Remind Me: "
+            placeholder={'Reminder Date'}
             data={sub.reminderDate.slice(0, -8)}
             onChange={(e) =>
               setSub({

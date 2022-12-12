@@ -4,19 +4,33 @@
   align-items: center;
   justify-content: space-around;
   width: 100%;
-  /* padding: 10px; */
 }
 
-.form-input-label {
+/* .form-input-label {
   display: flex;
   font-size: 20px;
   margin-top: 0.5rem;
-}
+} */
 
 .form-input-box {
+  font-size: 14px;
   color: blue;
   border: none;
   border-radius: 5px;
-  /* padding: 10px; */
+  padding: 10px;
+  margin: 10px;
   width: 100%;
+}
+
+.form-date {
+  text-align: right;
+}
+.form-input-box:before {
+  color: rgb(145, 145, 145);
+  font-family: 'Manrope', sans-serif;
+  content: attr(placeholder) !important;
+  margin-right: 0.5em;
+}
+.form-input-box:focus:before {
+  content: '' !important;
 }
