@@ -5,9 +5,10 @@ import { useParams } from 'react-router-dom';
 
 type Props = {
   subscriptions?: Array<Subscription>;
+  setSubs: React.Dispatch<React.SetStateAction<Subscription[] | undefined>>
 }
 
-function EditSubItem({ subscriptions }: Props) {
+function EditSubItem({ subscriptions, setSubs }: Props) {
   const { id } = useParams();
 
   if (!subscriptions) return null;
@@ -15,7 +16,7 @@ function EditSubItem({ subscriptions }: Props) {
   const subscription = subscriptions.find((sub) => sub._id === id)
 
   return (<>
-    <SubForm subscription={subscription} />
+    <SubForm subscription={subscription} subscriptions={subscriptions} setSubs={setSubs} />
   </>);
 }
 

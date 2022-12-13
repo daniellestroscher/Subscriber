@@ -19,8 +19,8 @@ function SubscriptionList({ subscriptions }: { subscriptions?: Subscription[] })
       <option value="food">food</option>
       <option value="other">other</option>
     </select>
-    {subscriptions && subscriptions.map((sub) =>
-      <SubItem key={sub._id} subscription={sub} />
+    {subscriptions && subscriptions.map((sub, i) =>
+      <SubItem key={sub._id! + i} subscription={sub} />
     )}
 
   </div>

@@ -16,7 +16,6 @@ function SubFormItem({ label, placeholder, data, onChange, dataList, type, min, 
   return (<>
     {hasSection ?
       <section className='form-input'>
-        {/* <label className='form-input-label'>{label}</label> */}
         <input className='form-input-box'
           data-testid="form-input-box"
           type={type}
@@ -29,7 +28,6 @@ function SubFormItem({ label, placeholder, data, onChange, dataList, type, min, 
       </section>
       :
       <>
-        {/* <label className='form-input-label'>{label}</label> */}
         <input className={'form-input-box' + ` ${type === 'date' ? 'form-date': null} ${type === 'datetime-local' ? 'form-date': null}`}
           data-testid="form-input-box"
           type={type}

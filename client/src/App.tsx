@@ -51,9 +51,9 @@ function App() {
     <div className='app-body'>
       <Router>
         <Routes>
-          <Route path='/' element={user ? <Home subscriptions={subscriptions} /> : <Login />} />
-          <Route path='/add' element={user ? <AddSubForm /> : <Login />} />
-          <Route path='/edit-sub/:id' element={user ? <EditSubItem subscriptions={subscriptions} /> : <Login />} />
+          <Route path='/' element={user ? <Home subscriptions={subscriptions}/> : <Login />} />
+          <Route path='/add' element={user ? <AddSubForm subscriptions={subscriptions as Subscription[]} setSubs={setSubs} /> : <Login />} />
+          <Route path='/edit-sub/:id' element={user ? <EditSubItem subscriptions={subscriptions} setSubs={setSubs} /> : <Login />} />
           <Route path='/register' element={<Register />} />
         </Routes>
       </Router>

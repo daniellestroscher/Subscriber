@@ -15,9 +15,11 @@ import { getMessageToken } from "../../firebase";
 
 type Props = {
   subscription?: Subscription;
+  setSubs: React.Dispatch<React.SetStateAction<Subscription[] | undefined>>;
+  subscriptions: Subscription[];
 };
 
-function SubForm({ subscription }: Props) {
+function SubForm({ subscription, setSubs, subscriptions }: Props) {
   let initialState: Subscription;
   let apiServiceMethod: (formData: Subscription) => void;
 
@@ -66,8 +68,7 @@ function SubForm({ subscription }: Props) {
     const prettyStart = dateTime.toDateString();
     let icon = sub.icon;
     if (imageFile) icon = (await uploadImage()).url;
-
-    apiServiceMethod({
+    const subscriptionData = {
       icon,
       price: sub.price,
       title: sub.title,
@@ -77,7 +78,8 @@ function SubForm({ subscription }: Props) {
       cycle: sub.cycle,
       reminderDate: new Date(sub.reminderDate).toISOString(),
       _id: subscription?._id,
-    });
+    };
+    apiServiceMethod(subscriptionData);
 
     if (sub.reminderDate) {
       const delay = new Date(sub.reminderDate).getTime() - new Date().getTime();
@@ -90,11 +92,17 @@ function SubForm({ subscription }: Props) {
       };
       postSubNotification(notification);
     }
+    setSubs([...subscriptions, subscriptionData]);
+    //TODO:change setsubs to refetch saved data
     navigate("/");
   };
 
   const handleDelete = () => {
     if (subscription?._id) deleteSub(subscription._id.toString());
+    let subsMinusDelete = subscriptions.filter(
+      (subs) => subs._id !== subscription?._id
+    );
+    setSubs([...subsMinusDelete]);
     navigate("/");
   };
 
@@ -126,7 +134,7 @@ function SubForm({ subscription }: Props) {
           <div className="payment-info">
             <SubFormItem
               label="Price:"
-              placeholder='Price'
+              placeholder="Price"
               data={sub.price}
               onChange={(e) =>
                 setSub({ ...sub, price: parseInt(e.target.value) })
@@ -152,7 +160,7 @@ function SubForm({ subscription }: Props) {
         <div className="form-body">
           <SubFormItem
             label="Title: "
-            placeholder='Title'
+            placeholder="Title"
             data={sub.title}
             onChange={(e) => setSub({ ...sub, title: e.target.value })}
             type="string"
@@ -172,14 +180,14 @@ function SubForm({ subscription }: Props) {
           </select>
           <SubFormItem
             label="First Payment: "
-            placeholder='First Payment Date'
+            placeholder="First Payment Date"
             data={new Date(sub.start).toLocaleDateString("en-ca")}
             onChange={(e) => setSub({ ...sub, start: e.target.value })}
             type="date"
           />
           <SubFormItem
             label="Remind Me: "
-            placeholder={'Reminder Date'}
+            placeholder={"Reminder Date"}
             data={sub.reminderDate.slice(0, -8)}
             onChange={(e) =>
               setSub({
