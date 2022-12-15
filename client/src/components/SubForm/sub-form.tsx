@@ -12,6 +12,7 @@ import {
 } from "../../api-service/api-service";
 import SubFormItem from "../SubFormItem/sub-form-item";
 import { getMessageToken } from "../../firebase";
+import { DateTime } from "luxon";
 
 type Props = {
   subscription?: Subscription;
@@ -59,15 +60,15 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       body: data,
     });
     imgData = await imgData.json();
-    console.log(imgData)
+    console.log(imgData);
     return imgData;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    let dateTime = new Date(sub.start);
-    const prettyStart = dateTime.toDateString();
+    let dateTime = DateTime.fromISO(sub.start);
+    const prettyStart = dateTime.toLocaleString(DateTime.DATE_FULL);
+    console.log(prettyStart);
     let icon = sub.icon;
     if (imageFile) icon = (await uploadImage()).url;
     const subscriptionData = {
@@ -98,6 +99,7 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       };
       postSubNotification(notification);
     }
+
     navigate("/");
   };
 
@@ -185,22 +187,24 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
           <SubFormItem
             label="First Payment: "
             placeholder="First Payment Date"
-            data={new Date(sub.start).toLocaleDateString("en-ca")}
-            onChange={(e) => setSub({ ...sub, start: e.target.value })}
+            data={sub.start}
+            onChange={(e) => {
+              setSub({ ...sub, start: e.target.value });
+            }}
             type="date"
           />
           <SubFormItem
             label="Remind Me: "
             placeholder={"First Reminder Date"}
             data={sub.reminderDate.slice(0, -8)}
-            onChange={(e) =>
+            onChange={(e) => {
               setSub({
                 ...sub,
-                reminderDate: new Date(e.target.value).toISOString(),
-              })
-            }
+                reminderDate: DateTime.fromISO(e.target.value).toString(),
+              });
+            }}
             type="datetime-local"
-            min={new Date().toISOString().slice(0, -8)}
+            min={DateTime.now().toString().slice(0, 16)}
           />
           <section>
             {subscription ? (
