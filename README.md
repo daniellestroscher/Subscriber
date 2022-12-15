@@ -1,4 +1,4 @@
-# Subscriber - a place to manage all your subscriptions!
+# Subscriber - manage your subscriptions, never get accidentally billed!
 
 Welcome to Subscriber, my person project and the app that makes it easy to organize your active subscriptions and free trials. 
 
@@ -13,8 +13,9 @@ Welcome to Subscriber, my person project and the app that makes it easy to organ
 
 - Create subscriptions
 - Set reminders
-- Never forget about an upcoming bill or to cancel your free trial
+- Never forget about an upcoming bill, or to cancel your free trials
 - View all you active subscriptions in one place
+- Easily see your monthly expenses on subscription services
 
 ## Development
 
