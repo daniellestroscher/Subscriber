@@ -25,7 +25,14 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
   let apiServiceMethod: (formData: Subscription) => void;
 
   if (subscription) {
+    let slicedStart = subscription.start.slice(0, 10);
+    subscription.start = slicedStart;
+
+    let correctTimeZoneOfReminder = DateTime.fromISO(subscription.reminderDate).setZone('America/Los_Angeles').toISO();
+    subscription.reminderDate = correctTimeZoneOfReminder;
+
     initialState = subscription;
+
     apiServiceMethod = editSub;
   } else {
     initialState = {
@@ -68,7 +75,7 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
     e.preventDefault();
     let dateTime = DateTime.fromISO(sub.start);
     const prettyStart = dateTime.toLocaleString(DateTime.DATE_FULL);
-    console.log(prettyStart);
+
     let icon = sub.icon;
     if (imageFile) icon = (await uploadImage()).url;
     const subscriptionData = {
@@ -79,17 +86,27 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       start: sub.start,
       prettyStart,
       cycle: sub.cycle,
-      reminderDate: new Date(sub.reminderDate).toISOString(),
+      reminderDate: sub.reminderDate,
       _id: subscription?._id,
     };
 
     let returnedData = Promise.resolve(apiServiceMethod(subscriptionData));
-    returnedData.then((res) =>
-      setSubs([...subscriptions, res] as Subscription[])
-    );
+    returnedData.then((res: Subscription | void) => {
+      console.log(res);
+      let match = subscriptions.filter((sub) => sub._id === res?._id);
+      console.log(match, subscriptions);
+      if (match.length) {
+        let filteredSubs = subscriptions.filter((sub) => sub._id !== res?._id);
+        setSubs([...filteredSubs, res] as Subscription[]);
+      } else {
+        setSubs([...subscriptions, res] as Subscription[]);
+      }
+    });
 
     if (sub.reminderDate) {
-      const delay = new Date(sub.reminderDate).getTime() - new Date().getTime();
+      //const delay = new Date(sub.reminderDate).getTime() - new Date().getTime();
+      const delay = DateTime.fromISO(sub.reminderDate).toMillis() - DateTime.now().toMillis();
+      console.log(delay)
       const token = (await getMessageToken()) || "";
       const notification: Notification = {
         token,
@@ -176,13 +193,13 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
             name="category"
             onChange={(e) => setSub({ ...sub, category: e.target.value })}
           >
-            <option value="select">Select Category</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="education">Education</option>
-            <option value="work">Work</option>
-            <option value="home">Home</option>
-            <option value="food">Food</option>
-            <option value="other">Other</option>
+            <option value="Select Category">Select Category</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Education">Education</option>
+            <option value="Work">Work</option>
+            <option value="Home">Home</option>
+            <option value="Food">Food</option>
+            <option value="Other">Other</option>
           </select>
           <SubFormItem
             label="First Payment: "
@@ -202,6 +219,7 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
                 ...sub,
                 reminderDate: DateTime.fromISO(e.target.value).toString(),
               });
+              console.log(DateTime.fromISO(e.target.value).toString());
             }}
             type="datetime-local"
             min={DateTime.now().toString().slice(0, 16)}

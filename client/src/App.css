@@ -23,5 +23,5 @@
 .toast-info {
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  margin-left: 15px;
 }

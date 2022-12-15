@@ -52,7 +52,7 @@ function App() {
         <img
           src="https://res.cloudinary.com/dovw0n8pd/image/upload/v1671065444/subLogoCroped_y8ldxh.png"
           alt="logo"
-          width="70"
+          width="90"
           height="70"
         />
         <Toast.Body>

@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import db from '../models/sub-model.js';
+import db from "../models/sub-model.js";
 export function getAllSubs(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var subscriptions, err_1;
@@ -50,7 +50,7 @@ export function getAllSubs(req, res) {
                     return [3 /*break*/, 3];
                 case 2:
                     err_1 = _a.sent();
-                    console.log('ERROR in SUB controller GET from db', err_1);
+                    console.log("ERROR in SUB controller GET from db", err_1);
                     res.status(500);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -66,10 +66,12 @@ export function postOneSub(req, res) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     sub = req.body;
+                    console.log('IM THE SUB', sub);
                     return [4 /*yield*/, db.create({
                             icon: sub.icon,
                             price: sub.price,
                             title: sub.title,
+                            category: sub.category,
                             start: sub.start,
                             prettyStart: sub.prettyStart,
                             cycle: sub.cycle,
@@ -82,7 +84,7 @@ export function postOneSub(req, res) {
                     return [3 /*break*/, 3];
                 case 2:
                     err_2 = _a.sent();
-                    console.log('ERROR in SUB controller POST from db', err_2);
+                    console.log("ERROR in SUB controller POST from db", err_2);
                     res.status(500);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -98,11 +100,13 @@ export function editSub(req, res) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     updates = req.body;
+                    console.log("IM AN UPDATE", updates);
                     query = { _id: updates._id };
                     return [4 /*yield*/, db.findOneAndUpdate(query, {
                             icon: updates.icon,
                             price: updates.price,
                             title: updates.title,
+                            category: updates.category,
                             start: updates.start,
                             prettyStart: updates.prettyStart,
                             cycle: updates.cycle,
@@ -115,7 +119,7 @@ export function editSub(req, res) {
                     return [3 /*break*/, 3];
                 case 2:
                     err_3 = _a.sent();
-                    console.log('ERROR in SUB controller PUT from db', err_3);
+                    console.log("ERROR in SUB controller PUT from db", err_3);
                     res.status(500);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
@@ -138,7 +142,7 @@ export function deleteSub(req, res) {
                     return [3 /*break*/, 3];
                 case 2:
                     err_4 = _a.sent();
-                    console.log('ERROR in SUB controller DELETE from db', err_4);
+                    console.log("ERROR in SUB controller DELETE from db", err_4);
                     res.status(500);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
