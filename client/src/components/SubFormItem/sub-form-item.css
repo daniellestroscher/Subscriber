@@ -14,7 +14,7 @@
 
 .form-input-box {
   font-size: 14px;
-  color: blue;
+  color: grey;
   border: none;
   border-radius: 5px;
   padding: 10px;
@@ -24,7 +24,9 @@
 
 .form-date {
   text-align: right;
+  color: blue;
 }
+
 .form-input-box:before {
   color: rgb(145, 145, 145);
   font-family: 'Manrope', sans-serif;

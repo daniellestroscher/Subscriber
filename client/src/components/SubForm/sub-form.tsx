@@ -53,11 +53,13 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       "cloud_name",
       process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || ""
     );
+
     let imgData = await fetch(process.env.REACT_APP_CLOUDINARY_URL || "", {
       method: "POST",
       body: data,
     });
     imgData = await imgData.json();
+    console.log(imgData)
     return imgData;
   };
 
@@ -79,7 +81,11 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       reminderDate: new Date(sub.reminderDate).toISOString(),
       _id: subscription?._id,
     };
-    apiServiceMethod(subscriptionData);
+
+    let returnedData = Promise.resolve(apiServiceMethod(subscriptionData));
+    returnedData.then((res) =>
+      setSubs([...subscriptions, res] as Subscription[])
+    );
 
     if (sub.reminderDate) {
       const delay = new Date(sub.reminderDate).getTime() - new Date().getTime();
@@ -92,8 +98,6 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
       };
       postSubNotification(notification);
     }
-    setSubs([...subscriptions, subscriptionData]);
-    //TODO:change setsubs to refetch saved data
     navigate("/");
   };
 
@@ -171,12 +175,12 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
             onChange={(e) => setSub({ ...sub, category: e.target.value })}
           >
             <option value="select">Select Category</option>
-            <option value="entertainment">entertainment</option>
-            <option value="education">education</option>
-            <option value="work">work</option>
-            <option value="home">home</option>
-            <option value="food">food</option>
-            <option value="other">other</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="education">Education</option>
+            <option value="work">Work</option>
+            <option value="home">Home</option>
+            <option value="food">Food</option>
+            <option value="other">Other</option>
           </select>
           <SubFormItem
             label="First Payment: "
@@ -187,7 +191,7 @@ function SubForm({ subscription, setSubs, subscriptions }: Props) {
           />
           <SubFormItem
             label="Remind Me: "
-            placeholder={"Reminder Date"}
+            placeholder={"First Reminder Date"}
             data={sub.reminderDate.slice(0, -8)}
             onChange={(e) =>
               setSub({
